@@ -1,7 +1,13 @@
-.PHONY: data test lint clean
+.PHONY: data db sql test lint clean
 
 data:
 	python scripts/download_data.py
+
+db:
+	python -m src.data --build-db
+
+sql:
+	python -m src.sqlrun
 
 test:
 	pytest -q

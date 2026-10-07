@@ -1,6 +1,6 @@
 # Customer Churn Prediction Baseline
 
-**Status:** Day 1 of 14
+**Status:** Day 2 of 14
 
 A 14-day, reproducible, leakage-safe baseline for customer churn prediction on the Telco Customer Churn dataset. Deliverable: a repository anyone can clone and run with `make data train eval` to get identical numbers.
 
@@ -19,13 +19,23 @@ A 14-day, reproducible, leakage-safe baseline for customer churn prediction on t
 - Test set evaluated exactly once (on Day 12).
 - Goal is honest evaluation and reproducibility, not leaderboard rank.
 
-## 4. Setup & Quickstart
+## 4. Data Profile (Day 2 SQL Output: `reports/sql_profile.csv`)
+SQL profiling performed on the SQLite `customers` table (`sql/01_profile.sql`):
+
+| Total Rows | Distinct Customers | Null `TotalCharges` | Total Churners | Overall Churn Rate |
+|---|---|---|---|---|
+| 7,043 | 7,043 | 11 | 1,869 | 26.537% (0.26537) |
+
+- All 7,043 rows correspond to unique customer IDs (0 duplicates).
+- `TotalCharges` contains 11 blank values (corresponding to customers with `tenure = 0`), which are coerced to `NULL` / `NaN` for imputation in the modeling pipeline.
+
+## 5. Setup & Quickstart
 
 ### Prerequisites
 - Python 3.10+
-- `make` (or execute scripts directly)
+- `make` (or execute python modules directly)
 
-### Reproduce Setup
+### Reproduce Setup & Database Build
 1. Clone the repository:
    ```bash
    git clone https://github.com/GauriMhetre/Churn-prediction-baseline.git
@@ -40,9 +50,11 @@ A 14-day, reproducible, leakage-safe baseline for customer churn prediction on t
    ```bash
    pip install -r requirements.txt
    ```
-4. Download data and verify SHA-256 checksum:
+4. Download data, load into SQLite, and run SQL profiling:
    ```bash
    make data
+   make db
+   make sql
    ```
 
 ### Manual Download Fallback
@@ -53,7 +65,7 @@ If the automated download fails:
 3. Verify SHA-256 checksum:
    `16320c9c1ec72448db59aa0a26a0b95401046bef5d02fd3aeb906448e3055e91`
 
-## 5. Results Table
+## 6. Results Table
 *Model training and evaluation will be populated on Days 8–12.*
 
 | Model | PR-AUC (Val) | ROC-AUC (Val) | Recall @ Prec ≥ 0.5 | Cost / Customer |
@@ -62,5 +74,5 @@ If the automated download fails:
 | *Logistic Regression (TBD Day 8)* | - | - | - | - |
 | *HistGradientBoosting (TBD Day 9)* | - | - | - | - |
 
-## 6. License
+## 7. License
 MIT License. See `LICENSE` for details.
