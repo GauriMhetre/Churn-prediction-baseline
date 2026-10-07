@@ -1,0 +1,27 @@
+seed: 42
+paths:
+  raw_csv: data/raw/telco_churn.csv
+  db: data/churn.db
+  splits_dir: data/splits
+  reports_dir: reports
+split:
+  train: 0.60
+  val: 0.20
+  test: 0.20
+target: Churn            # "Yes"/"No" -> 1/0
+id_col: customerID
+drop_cols: [customerID, gender]
+numeric_cols: [tenure, MonthlyCharges, TotalCharges]
+cost:
+  false_positive: 1.0    # ASSUMPTION
+  false_negative: 7.0    # ASSUMPTION
+metrics:
+  precision_floor: 0.5
+bootstrap:
+  n_resamples: 1000
+  alpha: 0.05
+cv:
+  n_splits: 5
+models:
+  logreg: {C: 1.0, max_iter: 1000, class_weight: balanced}
+  hgb:    {max_depth: 4, learning_rate: 0.1, max_iter: 200, class_weight: balanced}

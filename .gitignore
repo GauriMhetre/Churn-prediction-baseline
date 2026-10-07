@@ -1,0 +1,32 @@
+# Python / Virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+.pytest_cache/
+.ruff_cache/
+
+# Data & Database Artifacts
+data/raw/*
+!data/raw/.gitkeep
+data/*.db
+data/*.sqlite
+
+# Model Checkpoints & Reports Artifacts
+reports/models/
+reports/models/*.joblib
+reports/models/*.pkl
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
