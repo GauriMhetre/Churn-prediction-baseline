@@ -1,0 +1,13 @@
+Contract,tenure_bucket,segment,n,churners,churn_rate,rank
+Month-to-month,0-12,Month-to-month / 0-12,1994,1024,0.5135,1
+Month-to-month,13-24,Month-to-month / 13-24,737,278,0.3772,2
+Month-to-month,25-48,Month-to-month / 25-48,802,264,0.3292,3
+Month-to-month,49+,Month-to-month / 49+,342,89,0.2602,4
+One year,49+,One year / 49+,634,82,0.1293,5
+One year,25-48,One year / 25-48,518,55,0.1062,6
+One year,0-12,One year / 0-12,124,13,0.1048,7
+One year,13-24,One year / 13-24,197,16,0.0812,8
+Two year,49+,Two year / 49+,1263,42,0.0333,9
+Two year,25-48,Two year / 25-48,274,6,0.0219,10
+Two year,0-12,Two year / 0-12,68,0,0.0,11
+Two year,13-24,Two year / 13-24,90,0,0.0,11

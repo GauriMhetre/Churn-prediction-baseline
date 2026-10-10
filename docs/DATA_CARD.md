@@ -33,4 +33,6 @@ Expected ≈ 7,043 rows × 21 columns; churn rate ≈ 26–27%.
 Learning and portfolio demonstration only. Not for real customer decisions.
 
 ## Optional second dataset (Day 10)
-KKBox churn data (Kaggle; multi-table, large, requires Kaggle auth). If used, document its URL, license, churn definition, and time window in this file. If skipped, state in the README that temporal leakage was not tested.
+**Not used.** Temporal leakage was not tested because the Telco dataset lacks timestamps. A time-aware dataset would require explicit dates for feature measurements and churn events to enable a temporal split (train before cutoff date, test after cutoff) and quantify leakage risk. Production deployment of this model should include temporal validation on a time-stamped dataset before scoring real customers.
+
+See README §11 (Limitations) for details on what a temporal split would test and why it matters.

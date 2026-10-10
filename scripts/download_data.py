@@ -1,4 +1,4 @@
-"""Script to download the Telco Customer Churn dataset and verify its SHA-256 checksum."""
+"""Download the Telco Customer Churn dataset and verify SHA-256 checksum."""
 
 import hashlib
 import sys
@@ -13,7 +13,7 @@ OUTPUT_PATH = Path("data/raw/telco_churn.csv")
 
 
 def main() -> int:
-    """Download the dataset, verify SHA-256 checksum, and save to data/raw/telco_churn.csv.
+    """Download dataset, verify SHA-256 checksum, save to data/raw/telco_churn.csv.
 
     Returns:
         int: 0 on success, 1 on failure.

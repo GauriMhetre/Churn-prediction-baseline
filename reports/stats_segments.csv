@@ -1,0 +1,11 @@
+segment,n,churners,rate,ci_low,ci_high,column
+Month-to-month,2326,1002,0.4308,0.4108,0.451,Contract
+One year,865,93,0.1075,0.0886,0.1299,Contract
+Two year,1034,26,0.0251,0.0172,0.0366,Contract
+DSL,1474,275,0.1866,0.1675,0.2073,InternetService
+Fiber optic,1843,780,0.4232,0.4008,0.4459,InternetService
+No,908,66,0.0727,0.0575,0.0914,InternetService
+0-12mo,1238,598,0.483,0.4553,0.5109,tenure_bucket
+13-24mo,652,195,0.2991,0.2652,0.3353,tenure_bucket
+25-48mo,961,194,0.2019,0.1777,0.2284,tenure_bucket
+49+mo,1374,134,0.0975,0.0829,0.1144,tenure_bucket

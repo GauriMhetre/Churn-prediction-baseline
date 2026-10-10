@@ -17,6 +17,7 @@ cost:
   false_negative: 7.0    # ASSUMPTION
 metrics:
   precision_floor: 0.5
+  optimal_threshold: 0.2147  # From Day 11 cost optimization (c_fp=1.0, c_fn=7.0)
 bootstrap:
   n_resamples: 1000
   alpha: 0.05

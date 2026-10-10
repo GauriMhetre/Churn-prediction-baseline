@@ -1,0 +1,13 @@
+InternetService,PaymentMethod,n,churners,churn_rate
+Fiber optic,Electronic check,1595,849,0.5323
+Fiber optic,Mailed check,258,110,0.4264
+DSL,Electronic check,648,207,0.3194
+Fiber optic,Bank transfer (automatic),646,187,0.2895
+Fiber optic,Credit card (automatic),597,151,0.2529
+DSL,Mailed check,613,127,0.2072
+No,Electronic check,122,15,0.123
+DSL,Credit card (automatic),594,72,0.1212
+No,Mailed check,741,71,0.0958
+DSL,Bank transfer (automatic),566,53,0.0936
+No,Bank transfer (automatic),332,18,0.0542
+No,Credit card (automatic),331,9,0.0272

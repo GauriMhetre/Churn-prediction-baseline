@@ -33,8 +33,18 @@ def create_synthetic_df(rows: list[dict]) -> pd.DataFrame:
 def test_load_raw_schema(tmp_path: Path) -> None:
     """Test that load_raw converts types correctly and adds churn integer column."""
     rows = [
-        {"customerID": "0001-AAA", "TotalCharges": "100.5", "Churn": "No", "SeniorCitizen": 0},
-        {"customerID": "0002-BBB", "TotalCharges": " ", "Churn": "Yes", "SeniorCitizen": 1},
+        {
+            "customerID": "0001-AAA",
+            "TotalCharges": "100.5",
+            "Churn": "No",
+            "SeniorCitizen": 0,
+        },
+        {
+            "customerID": "0002-BBB",
+            "TotalCharges": " ",
+            "Churn": "Yes",
+            "SeniorCitizen": 1,
+        },
     ]
     df_syn = create_synthetic_df(rows)
     csv_file = tmp_path / "synthetic_telco.csv"
@@ -48,8 +58,10 @@ def test_load_raw_schema(tmp_path: Path) -> None:
     assert df_loaded.loc[df_loaded["customerID"] == "0002-BBB", "churn"].iloc[0] == 1
 
     # Check TotalCharges numeric conversion with coercion (blank -> NaN)
-    assert pd.isna(df_loaded.loc[df_loaded["customerID"] == "0002-BBB", "TotalCharges"].iloc[0])
-    assert df_loaded.loc[df_loaded["customerID"] == "0001-AAA", "TotalCharges"].iloc[0] == 100.5
+    field = df_loaded.loc[df_loaded["customerID"] == "0002-BBB", "TotalCharges"].iloc[0]
+    assert pd.isna(field)
+    field = df_loaded.loc[df_loaded["customerID"] == "0001-AAA", "TotalCharges"].iloc[0]
+    assert field == 100.5
 
 
 def test_unique_ids(tmp_path: Path) -> None:

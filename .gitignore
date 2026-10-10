@@ -3,15 +3,21 @@ __pycache__/
 *.py[cod]
 *$py.class
 .venv/
+.venv-clean/
 env/
 venv/
 ENV/
 .pytest_cache/
 .ruff_cache/
 
+# Archives
+*.zip
+
 # Data & Database Artifacts
 data/raw/*
 !data/raw/.gitkeep
+data/external/*
+!data/external/.gitkeep
 data/*.db
 data/*.sqlite
 

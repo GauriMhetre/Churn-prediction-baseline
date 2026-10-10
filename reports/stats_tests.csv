@@ -1,0 +1,5 @@
+chi2,p_value,dof,cramers_v,variable
+743.1817,0.0,2,0.4194,Contract
+455.4888,0.0,2,0.3283,InternetService
+399.9836,0.0,3,0.3077,PaymentMethod
+0.0891,0.765331,1,0.0046,PhoneService

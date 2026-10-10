@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, day-* ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint with ruff
+      run: |
+        ruff check .
+
+    - name: Run tests
+      run: |
+        pytest -q
+
+    - name: Download and process data
+      run: |
+        make data
+
+    - name: Load data into SQLite
+      run: |
+        make db
+
+    - name: Run SQL profiling and queries
+      run: |
+        make sql
+
+    - name: Create stratified split
+      run: |
+        make split
+
+    - name: Compute statistics
+      run: |
+        make stats
+
+    - name: Train models
+      run: |
+        make train
+
+    - name: Evaluate models on validation set
+      run: |
+        make eval

@@ -1,0 +1,25 @@
+{
+  "pr_auc": {
+    "point": 0.6617,
+    "ci_low": 0.6129,
+    "ci_high": 0.7116
+  },
+  "roc_auc": {
+    "point": 0.845,
+    "ci_low": 0.8234,
+    "ci_high": 0.8659
+  },
+  "recall_at_precision": {
+    "point": 0.8262,
+    "ci_low": 0.7365,
+    "ci_high": 0.8938
+  },
+  "brier": {
+    "point": 0.1623,
+    "ci_low": 0.1515,
+    "ci_high": 0.1729
+  },
+  "threshold": 0.2147,
+  "n_test": 1409,
+  "n_churners_test": 374
+}
