@@ -24,15 +24,15 @@ Expected ≈ 7,043 rows × 21 columns; churn rate ≈ 26–27%.
 
 ## Leakage and framing risks
 - No timestamps: cannot do a temporal split or verify the label was unknown at prediction time.
-- Label means "left in the most recent month" while features describe the current account state; some fields (e.g. tenure, charges) may partially reflect the outcome. List suspects in the README after Day 3.
+- Label means "left in the most recent month" while features describe the current account state; some fields (e.g. tenure, charges) may partially reflect the outcome. List suspects in the README.
 
 ## Fairness notes
-- `gender` is excluded from modeling by design (D8). `SeniorCitizen` retained only if justified; audit error rates by both in Day 11.
+- `gender` is excluded from modeling by design (D8). `SeniorCitizen` retained only if justified; audit error rates by both.
 
 ## Intended use / not intended for
 Learning and portfolio demonstration only. Not for real customer decisions.
 
-## Optional second dataset (Day 10)
+## Optional second dataset
 **Not used.** Temporal leakage was not tested because the Telco dataset lacks timestamps. A time-aware dataset would require explicit dates for feature measurements and churn events to enable a temporal split (train before cutoff date, test after cutoff) and quantify leakage risk. Production deployment of this model should include temporal validation on a time-stamped dataset before scoring real customers.
 
 See README §11 (Limitations) for details on what a temporal split would test and why it matters.

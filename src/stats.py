@@ -287,9 +287,9 @@ def main() -> None:
 
     logger.info(f"Loaded train split with {len(train_df)} rows")
 
-    # ============ Day 5: Segment churn (Wilson CIs) ============
+    # ============ Segment churn (Wilson CIs) ============
     logger.info("=" * 60)
-    logger.info("DAY 5: Segment Churn Analysis (TRAIN split)")
+    logger.info("Segment Churn Analysis (TRAIN split)")
     logger.info("=" * 60)
 
     # Compute segment churn for each column
@@ -333,9 +333,9 @@ def main() -> None:
     combined_df.to_csv(out_csv, index=False)
     logger.info(f"Saved segment stats to {out_csv}")
 
-    # ============ Day 6: Statistical tests (Chi-square, VIF) ============
+    # ============ Statistical tests (Chi-square, VIF) ============
     logger.info("=" * 60)
-    logger.info("DAY 6: Statistical Tests (TRAIN split)")
+    logger.info("Statistical Tests (TRAIN split)")
     logger.info("=" * 60)
 
     # Chi-square tests on categorical columns

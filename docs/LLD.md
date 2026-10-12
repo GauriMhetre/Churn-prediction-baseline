@@ -150,7 +150,7 @@ stats  -> python -m src.stats
 split  -> python -m src.data --split
 train  -> python -m src.train
 eval   -> python -m src.evaluate            # validation
-final  -> python -m src.evaluate --final    # Day 12 only
+final  -> python -m src.evaluate --final    # final evaluation only
 test   -> pytest -q
 lint   -> ruff check .
 clean  -> rm -f data/*.db

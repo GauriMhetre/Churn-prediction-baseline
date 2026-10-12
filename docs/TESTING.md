@@ -27,11 +27,11 @@ except `tests/test_data_integration.py`, which is skipped if `data/raw/telco_chu
 | | `test_final_eval_one_shot` | Second call without `force` refuses |
 | `tests/test_config.py` | `test_split_fractions_sum_to_one` | train+val+test == 1.0 |
 
-## Reproducibility check (manual, Day 13–14)
+## Reproducibility check (manual)
 Fresh clone → venv → `pip install -r requirements.txt` → `make data db sql split train eval`.
 Compare results table to the README. Differences beyond floating-point noise are bugs.
 
-## Leakage checklist (review before Day 12)
+## Leakage checklist
 - [ ] No `fit`/`fit_transform` outside a Pipeline trained on training rows
 - [ ] No feature derived from the target or from `TotalCharges` computed using future info without justification
 - [ ] Test IDs never loaded before `--final`

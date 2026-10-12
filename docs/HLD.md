@@ -80,6 +80,6 @@ a public CSV download at setup time.
 ## 7. Out of scope (later sprint weeks)
 Experiment tracking server, model registry, serving API, Docker, monitoring.
 
-## 8. Extension point (Day 10)
+## 8. Extension point
 A second dataset adapter (`src/data_kkbox.py`) producing the same interface
 (`load() -> DataFrame`, `time_split(df, cutoff) -> (train, test)`) to compare random vs time-based splits. Optional.

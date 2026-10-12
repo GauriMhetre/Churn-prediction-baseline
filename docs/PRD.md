@@ -4,8 +4,8 @@
 |---|---|
 | Owner | Gauri M |
 | Repo | https://github.com/GauriMhetre/Churn-prediction-baseline |
-| Version | 1.0 (Week 1–2 of a 12-week ML Engineer sprint) |
-| Status | In progress (Day 1 of 14) |
+| Version | 1.0 |
+| Status | Complete |
 
 ## 1. Overview
 A telecom provider loses customers each month. This project builds a reproducible,
@@ -76,16 +76,16 @@ prioritize offers. The repo itself is the product: it must be re-runnable by a s
 | Risk | Likelihood | Mitigation |
 |---|---|---|
 | Leakage via preprocessing before split | High for beginners | Pipeline-only preprocessing + test |
-| Tuning on test set | Medium | Test locked until Day 12; one-shot guard |
+| Tuning on test set | Medium | Test locked until final evaluation; one-shot guard |
 | Dataset URL changes or disappears | Medium | SHA-256 check; documented manual fallback |
 | Overfitting to a small dataset (~7k rows) | Medium | Stratified CV, CIs, simple models first |
-| Scope creep into modeling extras | High | `AGENTS.md` rule 1; roadmap |
-| Time-aware dataset (Day 10) too heavy | Medium | Documented fallback: skip and state limitation |
+| Scope creep into modeling extras | High | `AGENTS.md` rule 1 |
+| Time-aware dataset too heavy | Medium | Documented fallback: skip and state limitation |
 
 ## 11. Milestones
-See `docs/ROADMAP.md` (14 days, six phases).
+See implementation in the repository code.
 
 ## 12. Open questions
-- OQ-1. Use KKBox (time-aware) on Day 10, or document the limitation and skip?
+- OQ-1. Time-aware dataset validation, or document the limitation and skip?
 - OQ-2. Exclude `gender` from features? (Default in this PRD: yes, see DATA_CARD.)
 - OQ-3. Derive the cost ratio from `MonthlyCharges` or keep fixed assumptions?

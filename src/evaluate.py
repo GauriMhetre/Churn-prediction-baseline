@@ -262,7 +262,7 @@ def calibration_plot(
 
 
 def final_evaluation(cfg: dict, force: bool = False) -> dict[str, Any]:
-    """Run final evaluation on test split (Day 12 only).
+    """Run final evaluation on test split.
 
     Refits best model on train+val, evaluates on test with bootstrap CIs.
     Refuses if reports/final_metrics.json already exists unless force=True.
@@ -295,7 +295,7 @@ def final_evaluation(cfg: dict, force: bool = False) -> dict[str, Any]:
         logger.warning(f"Overwriting existing {final_metrics_path}")
 
     # Load data and best config
-    logger.info("Day 12: Final Evaluation on Test Split")
+    logger.info("Final Evaluation on Test Split")
     logger.info("=" * 60)
 
     from src.data import load_raw, load_split, make_splits
@@ -353,7 +353,7 @@ def final_evaluation(cfg: dict, force: bool = False) -> dict[str, Any]:
     logger.info(f"Scoring on test split: {len(test_df)} rows")
     y_test_pred_proba = pipeline.predict_proba(X_test)[:, 1]
 
-    # Optimal threshold from Day 11 (read from config)
+    # Optimal threshold from validation (read from config)
     optimal_threshold = cfg["metrics"]["optimal_threshold"]
 
     # Compute point estimates
@@ -511,8 +511,8 @@ def main() -> None:
     """CLI entry point for evaluation.
 
     Loads trained models, evaluates on validation set, generates metrics.csv.
-    On Day 11+, also computes optimal threshold, calibration plot, and error analysis.
-    On Day 12, can run final evaluation on test split with --final flag.
+    Can also compute optimal threshold, calibration plot, and error analysis.
+    With --final flag, runs final evaluation on test split with bootstrap CIs.
     """
 
     import joblib
@@ -521,7 +521,7 @@ def main() -> None:
     parser.add_argument(
         "--final",
         action="store_true",
-        help="Run final evaluation on test set (Day 12 only)",
+        help="Run final evaluation on test set",
     )
     parser.add_argument(
         "--force",
@@ -538,7 +538,7 @@ def main() -> None:
         final_evaluation(cfg, force=args.force)
         return
 
-    # Validation evaluation (Day 8 + Day 9)
+    # Validation evaluation
     from src.config import load_config
     from src.data import load_raw, make_splits
     from src.features import build_preprocessor, split_xy
@@ -583,7 +583,7 @@ def main() -> None:
             f"ROC-AUC={metrics['roc_auc']:.4f}, Recall@P≥0.5={metrics['recall_at_precision']:.4f}"
         )
 
-    # Evaluate best HGB config (Day 9)
+    # Evaluate best HGB config
     best_config_path = cfg["paths"]["reports_dir"] + "/best_config.json"
     if Path(best_config_path).exists():
         logger.info(f"Loading best HGB config from {best_config_path}...")
@@ -628,8 +628,8 @@ def main() -> None:
             f"ROC-AUC={metrics['roc_auc']:.4f}, Recall@P≥0.5={metrics['recall_at_precision']:.4f}"
         )
 
-        # Day 11: Threshold optimization, calibration, error analysis
-        logger.info("Day 11: Computing optimal threshold and error analysis...")
+        # Threshold optimization, calibration, error analysis
+        logger.info("Computing optimal threshold and error analysis...")
 
         # Get predictions from best model
         y_val_pred_proba = pipeline.predict_proba(X_val)[:, 1]

@@ -1,8 +1,8 @@
 # Customer Churn Prediction Baseline
 
-**Status:** Day 12 of 14 — Final evaluation complete ✓
+**Status:** Final evaluation complete ✓
 
-A 14-day, reproducible, leakage-safe baseline for customer churn prediction on the Telco Customer Churn dataset. Deliverable: a repository anyone can clone and run with `make data train eval` to get identical numbers.
+A reproducible, leakage-safe baseline for customer churn prediction on the Telco Customer Churn dataset. Deliverable: a repository anyone can clone and run with `make data train eval` to get identical numbers.
 
 ## 1. Problem Statement & Framing (PRD Section 2)
 - **Churn Definition:** A customer left the service in the most recent month (`Churn = Yes`).
@@ -16,10 +16,10 @@ A 14-day, reproducible, leakage-safe baseline for customer churn prediction on t
 ## 3. Success Criteria (PRD Section 8)
 - Beats majority-class baseline on PR-AUC with non-overlapping 95% bootstrap confidence intervals.
 - A third party can reproduce the results table from a fresh clone without asking questions.
-- Test set evaluated exactly once (on Day 12).
+- Test set evaluated exactly once.
 - Goal is honest evaluation and reproducibility, not leaderboard rank.
 
-## 4. Data Profile (Day 2 SQL Output: `reports/sql_profile.csv`)
+## 4. Data Profile (SQL Output: `reports/sql_profile.csv`)
 SQL profiling performed on the SQLite `customers` table (`sql/01_profile.sql`):
 
 | Total Rows | Distinct Customers | Null `TotalCharges` | Total Churners | Overall Churn Rate |
@@ -29,7 +29,7 @@ SQL profiling performed on the SQLite `customers` table (`sql/01_profile.sql`):
 - All 7,043 rows correspond to unique customer IDs (0 duplicates).
 - `TotalCharges` contains 11 blank values (corresponding to customers with `tenure = 0`), which are coerced to `NULL` / `NaN` for imputation in the modeling pipeline.
 
-## 5. SQL Findings (Day 3 — Descriptive on All Rows)
+## 5. SQL Findings (Descriptive on All Rows)
 
 ### Contract Type Impact
 Churn is strongly associated with contract length. Month-to-month contracts have 15× higher churn (42.71%, n=3,875) than two-year contracts (2.83%, n=1,695). One-year contracts sit in between (11.27%, n=1,473).
@@ -81,7 +81,7 @@ The highest-churn segments are month-to-month contracts within the first year. M
 | … | … | … | … | … |
 | Two year / 0–12 | 68 | 0 | 0.00% | 11 |
 
-## 6. Statistical Tests (Day 6 — TRAIN Split Only)
+## 6. Statistical Tests (TRAIN Split Only)
 
 Chi-square tests of independence were performed on the training split (4,225 rows) to assess the strength of association between categorical features and churn, with effect sizes (Cramér's V) indicating practical significance. Collinearity among numeric features was assessed via variance inflation factors (VIF).
 
@@ -121,7 +121,7 @@ Collinearity among numeric features affects coefficient stability and interpreta
 
 Imbalance in churn rate (26.54% positive class on training split) will be addressed via `class_weight='balanced'` during model fitting. **No SMOTE** — oversampling can complicate temporal evaluation and violate the split contract if rows leak between partitions.
 
-## 7. Preprocessing Pipeline (Day 7 — No Model Training)
+## 7. Preprocessing Pipeline (No Model Training)
 
 Feature engineering is implemented in `src/features.py` as a scikit-learn `ColumnTransformer` to prevent data leakage. The preprocessor is fit only on training data and applied identically to validation/test during evaluation.
 
@@ -157,11 +157,11 @@ The following columns are **excluded** from the feature set:
 ### No Leakage Design
 
 The modeling pipeline enforces strict separation between train, validation, and test:
-1. **Split Before Statistics:** The stratified 60/20/20 split is created first (Day 4), before any model development or statistics.
+1. **Split Before Statistics:** The stratified 60/20/20 split is created first, before any model development or statistics.
 2. **TRAIN-Only Statistics:** All exploratory statistics (Days 5–6) use training rows only.
 3. **TRAIN-Only Preprocessing:** Each preprocessor (imputation, scaling, encoding) is fit on training data and applied identically to validation/test.
-4. **Test Set Untouched:** No metrics are computed on test rows until Day 12 (final evaluation, one-time only).
-5. **Day 3 SQL is Descriptive:** SQL profiling (Day 3) describes the full dataset to understand structure but does not inform model selection—all decisions are data-driven from TRAIN statistics only.
+4. **Test Set Untouched:** No metrics are computed on test rows until final evaluation (one-time only).
+5. **SQL is Descriptive:** SQL profiling describes the full dataset to understand structure but does not inform model selection—all decisions are data-driven from TRAIN statistics only.
 
 The `ColumnTransformer` pipeline in `src/features.py` is instantiated with fixed column names and indices. During cross-validation and final model training:
 - **fit() is called only on training data** inside the sklearn `Pipeline`.
@@ -192,9 +192,9 @@ The following features are flagged as **potential sources of leakage** and requi
 - **HYPOTHESIS: `MonthlyCharges`** — Monthly spending may change due to service usage, which could be influenced by unobserved customer satisfaction or needs. No causal claim is made.
 - **HYPOTHESIS: `InternetService` & `PaymentMethod`** — Customers' choice of internet service and payment method may reflect underlying risk. Automatic payments, for instance, are associated with lower churn, possibly because recurring billing reduces friction.
 
-**Key Control:** All exploratory statistics (Day 3–6) are computed on the full dataset to remain descriptive and avoid test-set contamination. Modeling (Days 7+) will strictly separate train/val/test and fit preprocessing on training rows only.
+**Key Control:** All exploratory statistics are computed on the full dataset to remain descriptive and avoid test-set contamination. Modeling will strictly separate train/val/test and fit preprocessing on training rows only.
 
-## 8. Train/Validation/Test Split (Day 4 — Stratified, Deterministic)
+## 8. Train/Validation/Test Split (Stratified, Deterministic)
 
 A **stratified 60/20/20 split** was created on the full dataset using seed 42 from the config, ensuring reproducibility:
 
@@ -208,13 +208,11 @@ A **stratified 60/20/20 split** was created on the full dataset using seed 42 fr
 
 **Determinism:** The split is deterministic—the same seed always produces identical partitions. ID files are committed to the repository for reproducibility; anyone cloning the repo will use these exact same splits.
 
-**Test Set Guarantee:** The test partition **will not be touched until Day 12** (final evaluation). No hyperparameter tuning, no threshold selection, no inspection of test metrics is performed before then. All model development (Days 7–11) happens on training and validation data only. This mechanical separation enforces leakage discipline.
+**Test Set Guarantee:** The test partition **will not be touched until final evaluation**. No hyperparameter tuning, no threshold selection, no inspection of test metrics is performed before then. All model development happens on training and validation data only. This mechanical separation enforces leakage discipline.
 
-## 8.5. Segment Uncertainty Analysis (Day 5 — TRAIN Split Only)
+## 8.5. Segment Uncertainty Analysis (TRAIN Split Only)
 
 Churn rates and 95% Wilson confidence intervals were computed on the **training split (4,225 rows)** to characterize uncertainty and identify segments with limited sample size:
-
-### Contract Type (Train Split)
 Churn varies by contract commitment, with uncertainty widening as sample size decreases:
 
 | Contract | n | Churn Rate | 95% CI |
@@ -354,9 +352,9 @@ If the automated download fails:
    `16320c9c1ec72448db59aa0a26a0b95401046bef5d02fd3aeb906448e3055e91`
 4. Continue with `make db` and subsequent steps.
 
-## 10. Results Table (Day 9 — Validation Only, HGB Tuned)
+## 10. Results Table (Validation Only, HGB Tuned)
 
-Cross-validation results (CV mean ± std) on training split and validation set metrics for three models: baseline Dummy and LogReg (Day 8), and tuned HistGradientBoosting (Day 9):
+Cross-validation results (CV mean ± std) on training split and validation set metrics for three models: baseline Dummy and LogReg, and tuned HistGradientBoosting:
 
 | Model | CV PR-AUC (Train) | CV ROC-AUC (Train) | Val PR-AUC | Val ROC-AUC | Recall @ Prec ≥ 0.5 (Val) | Brier (Val) |
 |---|---|---|---|---|---|---|
@@ -364,9 +362,9 @@ Cross-validation results (CV mean ± std) on training split and validation set m
 | Logistic Regression | 0.6655 ± 0.0284 | 0.8482 ± 0.0133 | 0.6429 | 0.8366 | 0.8155 | 0.1678 |
 | HistGradientBoosting (Tuned) | 0.6539 ± 0.0178 | 0.8387 ± 0.0141 | 0.6456 | 0.8401 | 0.8102 | 0.1637 |
 
-## 10.5. Final Results on Test Set (Day 12 — One-Time Evaluation)
+## 10.5. Final Results on Test Set (One-Time Evaluation)
 
-**Status: Day 12 of 14 — Final evaluation complete.**
+**Status: Final evaluation complete.**
 
 The best model (HistGradientBoosting with tuned hyperparameters) was refitted on the combined training and validation sets (5,634 rows) and evaluated on the held-out test set (1,409 rows) exactly once. Point estimates and 95% bootstrap confidence intervals (1,000 resamples, percentile method) are reported below:
 
@@ -384,21 +382,21 @@ The best model (HistGradientBoosting with tuned hyperparameters) was refitted on
   - **Brier: 0.1623** (−0.0327 vs dummy, lower Brier = better predictions)
 - **95% Confidence Intervals:** All bootstrap CIs are tight and exclude the dummy baseline values, confirming statistical significance.
 - **Test Set Details:** n = 1,409 customers, n_churners = 374 (26.54% churn rate, stratified to match training distribution).
-- **Optimal Threshold (from Day 11):** 0.2147, applied without retuning on test to prevent leakage.
+- **Optimal Threshold:** 0.2147, applied without retuning on test to prevent leakage.
 
 **Conclusion:** The tuned HGB model provides substantial discrimination and calibration gains over the majority-class baseline on unseen test data, validating the leakage-safe design and honest evaluation protocol.
 
-**Key Findings (Day 8 → Day 9):**
+**Key Findings (Previous Round):**
 - **Dummy baseline** (predicts class prior, 26.5%) has PR-AUC = 0.2654 and ROC-AUC = 0.5000.
 - **Logistic Regression** beats dummy by 2.4pp on PR-AUC (0.6429), with ROC-AUC of 0.8366 on validation.
-- **HistGradientBoosting (Day 8 baseline)** was competitive: PR-AUC = 0.6396, ROC-AUC = 0.8305.
-- **HistGradientBoosting (Day 9 tuned)** improves via hyperparameter grid search:
-  - **PR-AUC: 0.6456** (+0.60pp vs Day 8 baseline, beats LogReg by 0.27pp)
-  - **ROC-AUC: 0.8401** (+0.96pp vs Day 8 baseline, beats LogReg by 0.35pp)
-  - **Recall @ Prec ≥ 0.5: 0.8102** (+2.68pp vs Day 8 baseline)
-  - **Brier: 0.1637** (−0.01 vs Day 8 baseline, lower is better)
+- **HistGradientBoosting (Baseline)** was competitive: PR-AUC = 0.6396, ROC-AUC = 0.8305.
+- **HistGradientBoosting (Tuned)** improves via hyperparameter grid search:
+  - **PR-AUC: 0.6456** (+0.60pp vs baseline, beats LogReg by 0.27pp)
+  - **ROC-AUC: 0.8401** (+0.96pp vs baseline, beats LogReg by 0.35pp)
+  - **Recall @ Prec ≥ 0.5: 0.8102** (+2.68pp vs baseline)
+  - **Brier: 0.1637** (−0.01 vs baseline, lower is better)
 
-**Day 9 Tuning Details:**
+**Tuning Details:**
 - **Grid Search:** 36 configurations tested (4 × 3 × 3 = max_depth × learning_rate × max_iter)
   - `max_depth` ∈ {3, 4, 5, 6}
   - `learning_rate` ∈ {0.05, 0.10, 0.15}
@@ -409,7 +407,7 @@ The best model (HistGradientBoosting with tuned hyperparameters) was refitted on
 
 **Summary:** Tuned HGB now provides the best balance of discrimination (ROC-AUC = 0.8401), precision-recall trade-off (Recall @ Prec ≥ 0.5 = 0.8102), and calibration (Brier = 0.1637).
 
-## 11. Threshold & Error Analysis (Day 11 — Validation Only)
+## 11. Threshold & Error Analysis (Validation Only)
 
 ### Optimal Threshold Selection
 Using cost-minimization with the assumed cost parameters (c_fp=1.0, c_fn=7.0), the model identifies an **optimal decision threshold of 0.2147** that balances false positives and false negatives. This conservative threshold reflects the high penalty on false negatives (missing churners = 7.0) relative to false positives (offering retention = 1.0).
@@ -462,7 +460,7 @@ Gender and SeniorCitizen were included for audit purposes (not used in modeling 
 
 **Conclusion:** Model errors cluster on high-risk segments (month-to-month, early tenure, Fiber optic). This is expected and acceptable: the cost-optimized threshold prioritizes catching churners in these segments, accepting higher FP rates. In production, this means retention offers go disproportionately to month-to-month and early-tenure customers, which aligns with business risk.
 
-## 12. Limitations (Day 10)
+## 12. Limitations
 
 ### Temporal Leakage Not Tested
 The Telco Customer Churn dataset lacks timestamps (e.g., account creation dates, churn dates, feature measurement dates). This prevents a **temporal split test**, which is critical for production models.
